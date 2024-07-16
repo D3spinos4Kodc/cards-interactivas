@@ -1,7 +1,9 @@
-//SCRIPT CON LANZAMIENTO DE CARTA AL CENTRO SIN RETORNO A LA POSICION ORIGINAL
 document.addEventListener("DOMContentLoaded", function () {
     const cartas = document.querySelectorAll('.carta');
     const container = document.querySelector('.container');
+    let currentSetIndex = 0;
+    let intervalId = null;
+    let interactionBlocked = false;
 
     // Añadir atributos de datos a cada carta para los textos "Antes" y "Después"
     cartas.forEach((carta, indiceCarta) => {
@@ -18,11 +20,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // Función para dispersar las cartas alrededor del centro
     function dispersarCartas(setIndex) {
         const cartasVisibles = cardSets[setIndex];
-        const radio = 200;  // Radio del círculo de dispersión
+        const radio = 200; // Radio del círculo de dispersión
         const centroX = container.offsetWidth / 2;
         const centroY = container.offsetHeight / 2;
 
-        const dispersion = gsap.timeline();
+        const dispersion = gsap.timeline({
+            onComplete: () => {
+                interactionBlocked = false; // Permitir interacciones después de la dispersión
+            }
+        });
 
         cartasVisibles.forEach((carta, indiceCarta) => {
             const angulo = (indiceCarta / cartasVisibles.length) * 2 * Math.PI;
@@ -49,6 +55,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Función para animar la carta central
     function animarCartaCentral(carta, setIndex) {
+        interactionBlocked = true; // Bloquear interacciones durante la animación
+
         gsap.fromTo(carta, {
             y: -carta.offsetHeight,
             opacity: 0,
@@ -152,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
         gsap.to(carta, {
             x: container.offsetWidth / 2 - carta.offsetWidth / 2,
             y: container.offsetHeight / 2 - carta.offsetHeight / 2,
-            scale: 1.6,  
+            scale: 1.6,
             duration: 0.2,
             ease: "linear",
             zIndex: 100,
@@ -230,11 +238,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Inicializar el índice del conjunto actual y el ID del intervalo
-    let currentSetIndex = 0;
-    let intervalId = null;
-    let interactionBlocked = false;
-
     // Función para pasar al siguiente conjunto de cartas
     function nextSet() {
         if (interactionBlocked) return;
@@ -261,7 +264,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Inicializar el primer conjunto de cartas
     inicializarCartas(currentSetIndex);
 
-    // Configurar el intervalo para cambiar de conjunto cada 10.5 segundos
+    // Configurar el intervalo para cambiar de conjunto cada 7.5 segundos
     intervalId = setInterval(nextSet, 7500);
 
     // Reiniciar el intervalo cuando una carta es clickeada

@@ -88,4 +88,7 @@
 .carta.flipped .cara-trasera {
     transform: rotateY(0deg); /* Rota la cara trasera a su posición original */
 }
+.interaction-blocked * {
+    pointer-events: none;
+}
 

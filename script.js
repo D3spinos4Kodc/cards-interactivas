@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
     const cartas = document.querySelectorAll('.carta');
     const container = document.querySelector('.container');
+    const interactionBlocker = document.querySelector('.interaction-blocker');
     let currentSetIndex = 0;
     let intervalId = null;
-    let interactionBlocked = false;
+    let interactionBlocked = true; // Inicialmente bloqueado hasta que se complete la animación inicial
 
     // Añadir atributos de datos a cada carta para los textos "Antes" y "Después"
     cartas.forEach((carta, indiceCarta) => {
@@ -25,8 +26,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const centroY = container.offsetHeight / 2;
 
         const dispersion = gsap.timeline({
+            onStart: () => {
+                interactionBlocked = true; // Bloquear interacciones al iniciar la dispersión
+                interactionBlocker.style.display = 'block'; // Mostrar el bloqueo de interacción
+            },
             onComplete: () => {
-                interactionBlocked = false; // Permitir interacciones después de la dispersión
+                interactionBlocked = false; // Habilitar interacciones al completar la dispersión
+                interactionBlocker.style.display = 'none'; // Ocultar el bloqueo de interacción
             }
         });
 
@@ -55,8 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Función para animar la carta central
     function animarCartaCentral(carta, setIndex) {
-        interactionBlocked = true; // Bloquear interacciones durante la animación
-
         gsap.fromTo(carta, {
             y: -carta.offsetHeight,
             opacity: 0,
@@ -68,6 +72,10 @@ document.addEventListener("DOMContentLoaded", function () {
             scale: 1.6,
             duration: 0.3,
             ease: "bounce.inOut",
+            onStart: () => {
+                interactionBlocked = true; // Bloquear interacciones al iniciar la animación de la carta central
+                interactionBlocker.style.display = 'block'; // Mostrar el bloqueo de interacción
+            },
             onComplete: () => {
                 gsap.delayedCall(1.5, () => {
                     dispersarCartas(setIndex);
@@ -122,9 +130,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             }
 
-            carta.addEventListener('click', handleCartaClick);
-            carta.addEventListener('mouseenter', handleCartaMouseEnter);
-            carta.addEventListener('mouseleave', handleCartaMouseLeave);
             makeDraggable(carta);
         });
     }
@@ -179,6 +184,29 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Función para hacer una carta arrastrable
+    function makeDraggable(carta) {
+        Draggable.create(carta, {
+            type: "x,y",
+            bounds: container,
+            onPress() {
+                carta.classList.add('dragging');
+                gsap.to(carta, { zIndex: 20, scale: 1.3, duration: 0 });
+            },
+            onRelease() {
+                carta.classList.remove('dragging');
+                const rotation = carta.dataset.rotation || 0;
+                gsap.to(carta, {
+                    scale: 1,
+                    rotation: rotation,
+                    duration: 0.15,
+                    ease: "linear",
+                    zIndex: 1
+                });
+            }
+        });
+    }
+
     // Función para manejar el mouse enter en una carta Hover
     function handleCartaMouseEnter() {
         if (interactionBlocked) return;
@@ -213,36 +241,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Función para hacer una carta arrastrable
-    function makeDraggable(carta) {
-        Draggable.create(carta, {
-            type: "x,y",
-            bounds: container,
-            onPress() {
-                carta.classList.add('dragging');
-                cartas.forEach(c => c.classList.add('dragging'));
-                gsap.to(carta, { zIndex: 20, scale: 1.3, duration: 0 });
-            },
-            onRelease() {
-                carta.classList.remove('dragging');
-                cartas.forEach(c => c.classList.remove('dragging'));
-                const rotation = carta.dataset.rotation || 0;
-                gsap.to(carta, {
-                    scale: 1,
-                    rotation: rotation,
-                    duration: 0.15,
-                    ease: "linear",
-                    zIndex: 1
-                });
-            }
-        });
-    }
-
     // Función para pasar al siguiente conjunto de cartas
     function nextSet() {
         if (interactionBlocked) return;
 
-        interactionBlocked = true;
+        disableInteractions(); // Deshabilitar interacciones antes de cambiar el conjunto
+
         const cartasVisibles = cardSets[currentSetIndex];
         let cartasSalidas = 0;
 
@@ -252,13 +256,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentSetIndex = (currentSetIndex + 1) % cardSets.length;
                 resetearCartas();
                 inicializarCartas(currentSetIndex);
-                interactionBlocked = false;
+                enableInteractions(); // Habilitar interacciones después de completar la inicialización
             }
         }
 
         cartasVisibles.forEach((carta, indiceCarta) => {
             salirCarta(carta, indiceCarta, onCartaSalida);
         });
+    }
+
+    // Función para deshabilitar interacciones
+    function disableInteractions() {
+        interactionBlocked = true;
+        interactionBlocker.style.display = 'block'; // Mostrar el bloqueo de interacción
+    }
+
+    // Función para habilitar interacciones
+    function enableInteractions() {
+        interactionBlocked = false;
+        interactionBlocker.style.display = 'none'; // Ocultar el bloqueo de interacción
     }
 
     // Inicializar el primer conjunto de cartas
@@ -273,5 +289,12 @@ document.addEventListener("DOMContentLoaded", function () {
             clearInterval(intervalId);
             intervalId = setInterval(nextSet, 7500);
         });
+    });
+
+    // Asignar manejadores de eventos para el hover y click en las cartas
+    cartas.forEach((carta) => {
+        carta.addEventListener('mouseenter', handleCartaMouseEnter);
+        carta.addEventListener('mouseleave', handleCartaMouseLeave);
+        carta.addEventListener('click', handleCartaClick);
     });
 });

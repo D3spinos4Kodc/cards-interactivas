@@ -1,8 +1,15 @@
+body{
+    box-sizing:border-box ;
+    margin: 0;
+    padding: 0;
+}
+
 .container {
     position: relative; /* Contenedor para posicionar las cartas absolutamente */
     width: 100%; /* Ajustar al ancho del contenedor */
     height: 100vh;
     overflow: hidden;
+    background: radial-gradient(circle, #7a41e4c7 0%, #7419ebcc 30%, #0a0a63fd 88%);
 }
 
 .carta {

@@ -22,7 +22,11 @@ function dispersarCartas(setIndex) {
     const centroX = container.offsetWidth / 2;
     const centroY = container.offsetHeight / 2;
     
-    const radio = isMobile ? 150 : 350; // Radio del círculo de dispersión para móviles y escritorio
+    // Variables para ajustar la dispersión
+    const radioEscritorio = 350; // Radio del círculo de dispersión en escritorio
+    const radioMovil = 150; // Radio del círculo de dispersión en móvil
+    const ajusteX = isMobile ? 0 : 0; // Ajuste horizontal adicional en escritorio (puedes modificar este valor)
+    const ajusteY = isMobile ? 0 : 0; // Ajuste vertical adicional en escritorio (puedes modificar este valor)
 
     const dispersion = gsap.timeline({
         onComplete: () => {
@@ -39,9 +43,10 @@ function dispersarCartas(setIndex) {
             posY = centroY - carta.offsetHeight / 2;
         } else {
             // Para pantallas grandes o las demás cartas en móvil
+            const radio = isMobile ? radioMovil : radioEscritorio;
             const angulo = (indiceCarta / (cartasVisibles.length - (isMobile ? 1 : 0))) * 2 * Math.PI;
-            posX = centroX + radio * Math.cos(angulo) - carta.offsetWidth / 2;
-            posY = centroY + radio * Math.sin(angulo) - carta.offsetHeight / 2;
+            posX = centroX + radio * Math.cos(angulo) - carta.offsetWidth / 2 + ajusteX;
+            posY = centroY + radio * Math.sin(angulo) - carta.offsetHeight / 2 + ajusteY;
         }
 
         const rotacionAleatoria = carta.dataset.rotation || gsap.utils.random(-30, 30);
@@ -61,6 +66,7 @@ function dispersarCartas(setIndex) {
 
     dispersion.play();
 }
+
 
 
     // Función para animar la carta central

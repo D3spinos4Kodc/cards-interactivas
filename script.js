@@ -15,42 +15,53 @@ document.addEventListener("DOMContentLoaded", function () {
         cardSets.push(Array.from(cartas).slice(i * 7, (i + 1) * 7));
     }
 
-    // Función para dispersar las cartas alrededor del centro
-    function dispersarCartas(setIndex) {
-        const cartasVisibles = cardSets[setIndex];
-        const radio = window.innerWidth <= 767 ? 100 : 200; // Radio del círculo de dispersión para móviles
-        const centroX = container.offsetWidth / 2;
-        const centroY = container.offsetHeight / 2;
+ // Función para dispersar las cartas alrededor del centro
+function dispersarCartas(setIndex) {
+    const cartasVisibles = cardSets[setIndex];
+    const isMobile = window.innerWidth <= 767; // Detección de vista móvil
+    const centroX = container.offsetWidth / 2;
+    const centroY = container.offsetHeight / 2;
     
-        const dispersion = gsap.timeline({
-            onComplete: () => {
-                interactionBlocked = false; // Habilitar interacciones después de la dispersión
-            }
-        });
-    
-        cartasVisibles.forEach((carta, indiceCarta) => {
-            const angulo = (indiceCarta / cartasVisibles.length) * 2 * Math.PI;
-            const posX = centroX + 350 * Math.cos(angulo) - carta.offsetWidth / 2;
-            const posY = centroY + radio * Math.sin(angulo) - carta.offsetHeight / 2;
-    
-            const rotacionAleatoria = carta.dataset.rotation || gsap.utils.random(-30, 30);
-            carta.dataset.rotation = rotacionAleatoria;
-    
-            dispersion.to(carta, {
-                x: posX - (container.offsetWidth / 13 - carta.offsetWidth / 2),
-                y: posY - (container.offsetHeight / 6 - carta.offsetHeight / 2),
-                opacity: 1,
-                scale: 1,
-                rotation: rotacionAleatoria,
-                duration: 0.2,
-                ease: "power2.inOut",
-                delay: indiceCarta * 0.1
-            }, 0);
-        });
-    
-        dispersion.play();
-    }
-    
+    const radio = isMobile ? 150 : 350; // Radio del círculo de dispersión para móviles y escritorio
+
+    const dispersion = gsap.timeline({
+        onComplete: () => {
+            interactionBlocked = false; // Habilitar interacciones después de la dispersión
+        }
+    });
+
+    cartasVisibles.forEach((carta, indiceCarta) => {
+        let posX, posY;
+
+        if (isMobile && indiceCarta === 0) {
+            // Si es móvil y es la carta principal, colócala en el centro
+            posX = centroX - carta.offsetWidth / 2;
+            posY = centroY - carta.offsetHeight / 2;
+        } else {
+            // Para pantallas grandes o las demás cartas en móvil
+            const angulo = (indiceCarta / (cartasVisibles.length - (isMobile ? 1 : 0))) * 2 * Math.PI;
+            posX = centroX + radio * Math.cos(angulo) - carta.offsetWidth / 2;
+            posY = centroY + radio * Math.sin(angulo) - carta.offsetHeight / 2;
+        }
+
+        const rotacionAleatoria = carta.dataset.rotation || gsap.utils.random(-30, 30);
+        carta.dataset.rotation = rotacionAleatoria;
+
+        dispersion.to(carta, {
+            x: posX - (container.offsetWidth / 13 - carta.offsetWidth / 2),
+            y: posY - (container.offsetHeight / 6 - carta.offsetHeight / 2),
+            opacity: 1,
+            scale: 1,
+            rotation: rotacionAleatoria,
+            duration: 0.2,
+            ease: "power2.inOut",
+            delay: indiceCarta * 0.1
+        }, 0);
+    });
+
+    dispersion.play();
+}
+
 
     // Función para animar la carta central
     function animarCartaCentral(carta, setIndex) {

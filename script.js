@@ -18,24 +18,24 @@ document.addEventListener("DOMContentLoaded", function () {
     // Función para dispersar las cartas alrededor del centro
     function dispersarCartas(setIndex) {
         const cartasVisibles = cardSets[setIndex];
-        const radio = 200; // Radio del círculo de dispersión
+        const radio = window.innerWidth <= 767 ? 100 : 200; // Radio del círculo de dispersión para móviles
         const centroX = container.offsetWidth / 2;
         const centroY = container.offsetHeight / 2;
-
+    
         const dispersion = gsap.timeline({
             onComplete: () => {
                 interactionBlocked = false; // Habilitar interacciones después de la dispersión
             }
         });
-
+    
         cartasVisibles.forEach((carta, indiceCarta) => {
             const angulo = (indiceCarta / cartasVisibles.length) * 2 * Math.PI;
             const posX = centroX + 350 * Math.cos(angulo) - carta.offsetWidth / 2;
             const posY = centroY + radio * Math.sin(angulo) - carta.offsetHeight / 2;
-
+    
             const rotacionAleatoria = carta.dataset.rotation || gsap.utils.random(-30, 30);
             carta.dataset.rotation = rotacionAleatoria;
-
+    
             dispersion.to(carta, {
                 x: posX - (container.offsetWidth / 13 - carta.offsetWidth / 2),
                 y: posY - (container.offsetHeight / 6 - carta.offsetHeight / 2),
@@ -47,9 +47,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 delay: indiceCarta * 0.1
             }, 0);
         });
-
+    
         dispersion.play();
     }
+    
 
     // Función para animar la carta central
     function animarCartaCentral(carta, setIndex) {

@@ -23,12 +23,12 @@ function dispersarCartas(setIndex) {
     const centroY = container.offsetHeight / 2;
     
     // Variables para ajustar el radio de dispersión
-    const radioXEscritorio = 350; // Radio de dispersión horizontal en escritorio
-    const radioYEscritorio = 250; // Radio de dispersión vertical en escritorio
-    const radioXMovil = 140; // Radio de dispersión horizontal en móvil
-    const radioYMovil = 200; // Radio de dispersión vertical en móvil
-    const ajusteX = isMobile ? 0 : 0; // Ajuste horizontal adicional en escritorio (puedes modificar este valor)
-    const ajusteY = isMobile ? 0 : 0; // Ajuste vertical adicional en escritorio (puedes modificar este valor)
+    const radioXEscritorio = 370; // Radio de dispersión horizontal en escritorio
+    const radioYEscritorio = 230; // Radio de dispersión vertical en escritorio
+    const radioXMovil = 150; // Radio de dispersión horizontal en móvil
+    const radioYMovil = 240; // Radio de dispersión vertical en móvil
+    const ajusteX = isMobile ? 0 : 0; // Ajuste horizontal adicional en escritorio ( modificar este valor)
+    const ajusteY = isMobile ? 0 : 0; // Ajuste vertical adicional en escritorio (modificar este valor)
 
     const dispersion = gsap.timeline({
         onComplete: () => {
@@ -40,7 +40,7 @@ function dispersarCartas(setIndex) {
         let posX, posY;
 
         if (isMobile && indiceCarta === 0) {
-            // Si es móvil y es la carta principal, colócala en el centro
+            // en móvil la carta principal, se colócala en el centro
             posX = centroX - carta.offsetWidth / 2;
             posY = centroY - carta.offsetHeight / 2;
         } else {
@@ -52,7 +52,7 @@ function dispersarCartas(setIndex) {
             posY = centroY + radioY * Math.sin(angulo) - carta.offsetHeight / 2 + ajusteY;
         }
 
-        const rotacionAleatoria = carta.dataset.rotation || gsap.utils.random(-30, 30);
+        const rotacionAleatoria = carta.dataset.rotation || gsap.utils.random(-40, 40);
         carta.dataset.rotation = rotacionAleatoria;
 
         dispersion.to(carta, {
@@ -62,7 +62,7 @@ function dispersarCartas(setIndex) {
             scale: 1,
             rotation: rotacionAleatoria,
             duration: 0.2,
-            ease: "power2.inOut",
+            ease: "bounce.out",
             delay: indiceCarta * 0.1
         }, 0);
     });
@@ -70,32 +70,30 @@ function dispersarCartas(setIndex) {
     dispersion.play();
 }
 
-
-
-
     // Función para animar la carta central
     function animarCartaCentral(carta, setIndex) {
         gsap.fromTo(carta, {
             y: -carta.offsetHeight,
-            opacity: 0,
-            scale: 20,
+            opacity: 0.6,
+            scale: 24,
+            ease: "bounce.out"
         }, {
             y: container.offsetHeight / 2 - carta.offsetHeight / 2,
             x: container.offsetWidth / 2 - carta.offsetWidth / 2,
             opacity: 1,
-            scale: 1.6,
+            scale: 1.7,
             duration: 0.3,
-            ease: "bounce.inOut",
+            ease: "bounce.out",
             onComplete: () => {
                 gsap.delayedCall(1.5, () => {
                     dispersarCartas(setIndex);
                     gsap.to(cartas, {
                         x: (index, target) => target.dataset.originalX,
                         y: (index, target) => target.dataset.originalY,
-                        scale: 1,
+                        scale: 0.97,
                         duration: 0.6,
-                        ease: "power2.inOut",
-                        delay: 1.5
+                        ease: "bounce.out",
+                        delay: 1
                     });
                 });
             }
@@ -156,7 +154,7 @@ function dispersarCartas(setIndex) {
                 scale: 1,
                 rotation: initialRotation,
                 duration: 0.2,
-                ease: "power2.inOut",
+                ease: "bounce.out",
                 zIndex: 1
             });
         });
@@ -222,7 +220,7 @@ function dispersarCartas(setIndex) {
             gsap.killTweensOf(carta);
             const rotation = carta.dataset.rotation || 0;
             gsap.to(carta, {
-                scale: 1,
+                scale: 1.2,
                 rotation: rotation,
                 duration: 0.2,
                 ease: "linear",
@@ -285,14 +283,14 @@ function dispersarCartas(setIndex) {
     // Inicializar el primer conjunto de cartas
     inicializarCartas(currentSetIndex);
 
-    // Configurar el intervalo para cambiar de conjunto cada 10.5 segundos
-    intervalId = setInterval(nextSet, 7500);
+    // Configurar el intervalo para cambiar de conjunto en segundos
+    intervalId = setInterval(nextSet, 8500);
 
     // Reiniciar el intervalo cuando una carta es clickeada
     cartas.forEach((carta) => {
         carta.addEventListener('click', () => {
             clearInterval(intervalId);
-            intervalId = setInterval(nextSet, 7500);
+            intervalId = setInterval(nextSet, 8500);
         });
     });
 });

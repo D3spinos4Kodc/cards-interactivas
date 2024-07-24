@@ -9,7 +9,7 @@ body{
     width: 100%; /* Ajustar al ancho del contenedor */
     height: 100vh;
     overflow: hidden;
-    background: radial-gradient(circle, #7a41e480 0%, #7419eba4 30%, #0a0a63cc 88%);
+    background: radial-gradient(circle, #642acfab 0%, #440694d2 30%, #030363 88%);
 }
 
 .carta {

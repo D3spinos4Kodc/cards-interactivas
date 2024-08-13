@@ -161,46 +161,46 @@ function dispersarCartas(setIndex) {
     }
 
     // Función para manejar el click en una carta
-    function handleCartaClick() {
-        if (interactionBlocked) return;
-    
-        const carta = this;
-        resetearCartas();
-    
-        carta.classList.toggle('flipped');
-    
-        // Quitar el box-shadow al hacer clic
-        carta.style.boxShadow = 'none';
-    
-        // Coloca la carta en la parte superior antes de iniciar la animación
-        gsap.set(carta, { zIndex: 100 });
-    
-        // Animar la carta clickeada hacia el centro
-        gsap.to(carta, {
-            x: container.offsetWidth / 2 - carta.offsetWidth / 2,
-            y: container.offsetHeight / 2 - carta.offsetHeight / 2,
-            scale: 1.6,
-            duration: 0.2,
-            ease: "linear",
-            zIndex: 100,
-            onComplete: () => {
-                gsap.delayedCall(0.4, () => {
-                    gsap.to(carta, {
-                        x: carta.dataset.originalX,
-                        y: carta.dataset.originalY,
-                        scale: 1.6,
-                        duration: 0.1,
-                        ease: "linear",
-                        zIndex: 100,
-                        // Volver a aplicar el box-shadow cuando la carta regrese al centro
-                        onComplete: () => {
-                            carta.style.boxShadow = '';
-                        }
-                    });
+   function handleCartaClick() {
+    if (interactionBlocked) return;
+
+    const carta = this;
+    resetearCartas();
+
+    carta.classList.toggle('flipped');
+
+    // Coloca la carta en la parte superior antes de iniciar la animación
+    gsap.set(carta, { zIndex: 100 });
+
+    // Mantener el escalado y box-shadow al hacer clic
+    const currentScale = carta._gsTransform.scaleX || 1.2; // Escala actual de la carta o valor de hover
+    const currentBoxShadow = window.getComputedStyle(carta).boxShadow;
+
+    // Animar la carta clickeada hacia el centro
+    gsap.to(carta, {
+        x: container.offsetWidth / 2 - carta.offsetWidth / 2,
+        y: container.offsetHeight / 2 - carta.offsetHeight / 2,
+        scale: currentScale,
+        boxShadow: currentBoxShadow, // Mantener el box-shadow
+        duration: 0.2,
+        ease: "linear",
+        zIndex: 100,
+        onComplete: () => {
+            gsap.delayedCall(0.4, () => {
+                gsap.to(carta, {
+                    x: carta.dataset.originalX,
+                    y: carta.dataset.originalY,
+                    scale: currentScale,
+                    boxShadow: currentBoxShadow, // Mantener el box-shadow al volver
+                    duration: 0.1,
+                    ease: "linear",
+                    zIndex: 100
                 });
-            }
-        });
-    }
+            });
+        }
+    });
+}
+
     
 
     // Función para manejar el mouse enter en una carta Hover

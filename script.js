@@ -163,15 +163,18 @@ function dispersarCartas(setIndex) {
     // Función para manejar el click en una carta
     function handleCartaClick() {
         if (interactionBlocked) return;
-
+    
         const carta = this;
         resetearCartas();
-
+    
         carta.classList.toggle('flipped');
-
+    
+        // Quitar el box-shadow al hacer clic
+        carta.style.boxShadow = 'none';
+    
         // Coloca la carta en la parte superior antes de iniciar la animación
         gsap.set(carta, { zIndex: 100 });
-
+    
         // Animar la carta clickeada hacia el centro
         gsap.to(carta, {
             x: container.offsetWidth / 2 - carta.offsetWidth / 2,
@@ -188,12 +191,17 @@ function dispersarCartas(setIndex) {
                         scale: 1.6,
                         duration: 0.1,
                         ease: "linear",
-                        zIndex: 100
+                        zIndex: 100,
+                        // Volver a aplicar el box-shadow cuando la carta regrese al centro
+                        onComplete: () => {
+                            carta.style.boxShadow = '';
+                        }
                     });
                 });
             }
         });
     }
+    
 
     // Función para manejar el mouse enter en una carta Hover
     function handleCartaMouseEnter() {

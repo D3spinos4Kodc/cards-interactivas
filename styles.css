@@ -16,7 +16,7 @@ body{
     position: absolute; /* Posicionamiento absoluto para animar */
     width: 180px; /* Ancho de la carta */
     height: 28%; /* Altura de la carta */
-    border: 1px solid #ccc;
+   /* border: 1px solid #ccc;*/
     border-radius: 4px;
     box-shadow: 0 2px 5px rgba(0, 2, 4, 0.4);
     cursor: pointer;

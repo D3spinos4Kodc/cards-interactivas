@@ -18,7 +18,8 @@ body{
     height: 28%; /* Altura de la carta */
    /* border: 1px solid #ccc;*/
     border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 2, 4, 0.4);
+   /*box-shadow: 0 2px 5px rgba(0, 2, 4, 0.4);*/
+    filter: drop-shadow(0px 0px 12px rgb(37, 37, 37));
     cursor: pointer;
     transition: all 0.3s ease; /* Transiciones para suavizar la animación */
     opacity: 0; /* Ocultar las cartas inicialmente */

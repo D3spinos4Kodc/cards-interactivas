@@ -16,36 +16,59 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Función para dispersar las cartas alrededor del centro
-    function dispersarCartas(setIndex) {
-        const cartasVisibles = cardSets[setIndex];
-        const radio = 200;  // Radio del círculo de dispersión
-        const centroX = container.offsetWidth / 2;
-        const centroY = container.offsetHeight / 2;
+function dispersarCartas(setIndex) {
+    const cartasVisibles = cardSets[setIndex];
+    const isMobile = window.innerWidth <= 767; // Detección de vista móvil
+    const centroX = container.offsetWidth / 2;
+    const centroY = container.offsetHeight / 2;
+    
+    // Variables para ajustar el radio de dispersión
+    const radioXEscritorio = 440; // Radio de dispersión horizontal en escritorio
+    const radioYEscritorio = 320; // Radio de dispersión vertical en escritorio
+    const radioXMovil = 150; // Radio de dispersión horizontal en móvil
+    const radioYMovil = 240; // Radio de dispersión vertical en móvil
+    const ajusteX = isMobile ? 0 : 0; // Ajuste horizontal adicional en escritorio ( modificar este valor)
+    const ajusteY = isMobile ? 0 : 0; // Ajuste vertical adicional en escritorio (modificar este valor)
 
-        const dispersion = gsap.timeline();
+    const dispersion = gsap.timeline({
+        onComplete: () => {
+            interactionBlocked = false; // Habilitar interacciones después de la dispersión
+        }
+    });
 
-        cartasVisibles.forEach((carta, indiceCarta) => {
-            const angulo = (indiceCarta / cartasVisibles.length) * 2 * Math.PI;
-            const posX = centroX + 350 * Math.cos(angulo) - carta.offsetWidth / 2;
-            const posY = centroY + radio * Math.sin(angulo) - carta.offsetHeight / 2;
+    cartasVisibles.forEach((carta, indiceCarta) => {
+        let posX, posY;
 
-            const rotacionAleatoria = carta.dataset.rotation || gsap.utils.random(-30, 30);
-            carta.dataset.rotation = rotacionAleatoria;
+        if (isMobile && indiceCarta === 0) {
+            // en móvil la carta principal, se colócala en el centro
+            posX = centroX - carta.offsetWidth / 2;
+            posY = centroY - carta.offsetHeight / 2;
+        } else {
+            // Para pantallas grandes o las demás cartas en móvil
+            const radioX = isMobile ? radioXMovil : radioXEscritorio;
+            const radioY = isMobile ? radioYMovil : radioYEscritorio;
+            const angulo = (indiceCarta / (cartasVisibles.length - (isMobile ? 1 : 0))) * 2 * Math.PI;
+            posX = centroX + radioX * Math.cos(angulo) - carta.offsetWidth / 2 + ajusteX;
+            posY = centroY + radioY * Math.sin(angulo) - carta.offsetHeight / 2 + ajusteY;
+        }
 
-            dispersion.to(carta, {
-                x: posX - (container.offsetWidth / 13 - carta.offsetWidth / 2),
-                y: posY - (container.offsetHeight / 6 - carta.offsetHeight / 2),
-                opacity: 1,
-                scale: 1,
-                rotation: rotacionAleatoria,
-                duration: 0.2,
-                ease: "power2.inOut",
-                delay: indiceCarta * 0.1
-            }, 0);
-        });
+        const rotacionAleatoria = carta.dataset.rotation || gsap.utils.random(-40, 40);
+        carta.dataset.rotation = rotacionAleatoria;
 
-        dispersion.play();
-    }
+        dispersion.to(carta, {
+            x: posX - (container.offsetWidth / 13 - carta.offsetWidth / 2),
+            y: posY - (container.offsetHeight / 6 - carta.offsetHeight / 2),
+            opacity: 1,
+            scale: 1,
+            rotation: rotacionAleatoria,
+            duration: 0.2,
+            ease: "bounce.out",
+            delay: indiceCarta * 0.1
+        }, 0);
+    });
+
+    dispersion.play();
+}
 
     // Función para animar la carta central
     function animarCartaCentral(carta, setIndex) {

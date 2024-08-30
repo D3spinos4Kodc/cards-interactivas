@@ -23,8 +23,8 @@ function dispersarCartas(setIndex) {
     const centroY = container.offsetHeight / 2;
     
     // Variables para ajustar el radio de dispersión
-    const radioXEscritorio = 440; // Radio de dispersión horizontal en escritorio
-    const radioYEscritorio = 320; // Radio de dispersión vertical en escritorio
+    const radioXEscritorio = 480; // Radio de dispersión horizontal en escritorio
+    const radioYEscritorio = 240; // Radio de dispersión vertical en escritorio
     const radioXMovil = 150; // Radio de dispersión horizontal en móvil
     const radioYMovil = 240; // Radio de dispersión vertical en móvil
     const ajusteX = isMobile ? 0 : 0; // Ajuste horizontal adicional en escritorio ( modificar este valor)

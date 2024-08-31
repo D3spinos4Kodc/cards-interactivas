@@ -3,12 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const cartas = document.querySelectorAll('.carta');
     const container = document.querySelector('.container');
 
-    // Añadir atributos de datos a cada carta para los textos "Antes" y "Después"
-    cartas.forEach((carta, indiceCarta) => {
-        carta.setAttribute('data-before', 'Antes ' + (indiceCarta + 1));
-        carta.setAttribute('data-after', 'Después ' + (indiceCarta + 1));
-    });
-
     // Dividir las cartas en conjuntos de 7 cartas cada uno
     const cardSets = [];
     for (let i = 0; i < 4; i++) {

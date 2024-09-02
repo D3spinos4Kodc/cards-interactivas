@@ -126,7 +126,7 @@ function dispersarCartas(setIndex) {
                     x: container.offsetWidth / 2 - carta.offsetWidth / 2,
                     y: container.offsetHeight / 2 - carta.offsetHeight / 2,
                     opacity: 0,
-                    scale: 0.8,
+                    scale: 0.9,
                     rotation: initialRotation
                 });
             }

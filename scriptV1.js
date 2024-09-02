@@ -126,7 +126,7 @@ function dispersarCartas(setIndex) {
                     x: container.offsetWidth / 2 - carta.offsetWidth / 2,
                     y: container.offsetHeight / 2 - carta.offsetHeight / 2,
                     opacity: 0,
-                    scale: 0.9,
+                    scale: 1,
                     rotation: initialRotation
                 });
             }
@@ -279,13 +279,13 @@ function dispersarCartas(setIndex) {
     inicializarCartas(currentSetIndex);
 
     // Configurar el intervalo para cambiar de conjunto cada 10.5 segundos
-    intervalId = setInterval(nextSet, 7500);
+    intervalId = setInterval(nextSet, 8500);
 
     // Reiniciar el intervalo cuando una carta es clickeada
     cartas.forEach((carta) => {
         carta.addEventListener('click', () => {
             clearInterval(intervalId);
-            intervalId = setInterval(nextSet, 7500);
+            intervalId = setInterval(nextSet, 8500);
         });
     });
 });

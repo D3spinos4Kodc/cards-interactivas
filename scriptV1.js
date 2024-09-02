@@ -53,7 +53,7 @@ function dispersarCartas(setIndex) {
             x: posX - (container.offsetWidth / 13 - carta.offsetWidth / 2),
             y: posY - (container.offsetHeight / 6 - carta.offsetHeight / 2),
             opacity: 1,
-            scale: 1,
+            scale: 1.2,
             rotation: rotacionAleatoria,
             duration: 0.2,
             ease: "bounce.out",

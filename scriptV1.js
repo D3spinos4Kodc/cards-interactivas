@@ -279,13 +279,13 @@ function dispersarCartas(setIndex) {
     inicializarCartas(currentSetIndex);
 
     // Configurar el intervalo para cambiar de conjunto cada 10.5 segundos
-    intervalId = setInterval(nextSet, 8500);
+    intervalId = setInterval(nextSet, 9500);
 
     // Reiniciar el intervalo cuando una carta es clickeada
     cartas.forEach((carta) => {
         carta.addEventListener('click', () => {
             clearInterval(intervalId);
-            intervalId = setInterval(nextSet, 8500);
+            intervalId = setInterval(nextSet, 9500);
         });
     });
 });

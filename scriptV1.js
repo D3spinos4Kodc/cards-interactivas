@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
 function dispersarCartas(setIndex) {
     const cartasVisibles = cardSets[setIndex];
     const isMobile = window.innerWidth <= 767; // Detección de vista móvil
-    const centroX = container.offsetWidth / 2;
-    const centroY = container.offsetHeight / 2;
+    const centroX = container.offsetWidth / 2.2;
+    const centroY = container.offsetHeight / 2.2;
     
     // Variables para ajustar el radio de dispersión
     const radioXEscritorio = 480; // Radio de dispersión horizontal en escritorio

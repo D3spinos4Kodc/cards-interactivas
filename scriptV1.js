@@ -17,7 +17,7 @@ function obtenerRadioDeDispersión() {
     // Breakpoints similares a media queries
     if (anchoPantalla >= 2560) {
         // Pantallas grandes de escritorio 2560
-        return { radioX: 650, radioY: 350, ajusteX: 0, ajusteY: -100, escala: 1.4 };
+        return { radioX: 650, radioY: 350, ajusteX: 0, ajusteY: -100, escala: 1.2 };
     } else if (anchoPantalla >= 1920) {
         // Pantallas estándar de escritorio 1920
         return { radioX: 550, radioY: 290, ajusteX: -30, ajusteY: 60, escala: 1.2 };

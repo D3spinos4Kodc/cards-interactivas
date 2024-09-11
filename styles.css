@@ -15,7 +15,7 @@ body{
 .carta {
     position: absolute; /* Posicionamiento absoluto para animar */
     width: 180px; /* Ancho de la carta */
-    height: 36%; /* Altura de la carta */
+    height: 34%; /* Altura de la carta */
    /* border: 1px solid #ccc;*/
     border-radius: 4px;
    /*box-shadow: 0 2px 5px rgba(0, 2, 4, 0.4);*/

@@ -35,7 +35,7 @@ function obtenerRadioDeDispersión() {
         return { radioX: 250, radioY: 150, ajusteX: 10, ajusteY: 10, escala: 1 };
     } else if (anchoPantalla >= 800) {
         // Pantallas de tablet en vertical 800
-        return { radioX: 180, radioY: 120, ajusteX: 5, ajusteY: 5, escala: 0.9 };
+        return { radioX: 180, radioY: 110, ajusteX: 5, ajusteY: 5, escala: 0.9 };
     } else {
         // Pantallas de móvil
         return { radioX: 144, radioY: 190, ajusteX: 0, ajusteY: 0, escala: 0.8 };
@@ -123,7 +123,7 @@ function animarCartaCentral(carta, setIndex) {
                 gsap.to(cartas, {
                     x: (index, target) => target.dataset.originalX,
                     y: (index, target) => target.dataset.originalY,
-                    scale: 0.97,
+                    scale: 1,
                     duration: 0.2,
                     ease: "bounce.out",
                     delay: 1
@@ -141,7 +141,7 @@ function salirCarta(carta, indiceCarta, onComplete) {
     gsap.to(carta, {
         x: destinoX,
         y: destinoY,
-        scale: 2.3,
+        scale: 2.4,
         opacity: 0,
         duration: 0.6,
         ease: "elastic.in",

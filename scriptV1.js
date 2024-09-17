@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function obtenerRadioDeDispersión() {
     const anchoPantalla = window.innerWidth;
     
-    // Breakpoints similares a media queries
+    // Breakpoints para las distintas resolciones
     if (anchoPantalla >= 2560) {
         // Pantallas grandes de escritorio 2560
         return { radioX: 650, radioY: 350, ajusteX: 0, ajusteY: -100, escala: 1.4 };

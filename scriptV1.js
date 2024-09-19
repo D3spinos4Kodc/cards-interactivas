@@ -38,7 +38,7 @@ function obtenerRadioDeDispersión() {
         return { radioX: 180, radioY: 110, ajusteX: 5, ajusteY: 5, escala: 0.9 };
     } else {
         // Pantallas de móvil
-        return { radioX: 144, radioY: 190, ajusteX: 0, ajusteY: 0, escala: 0.8 };
+        return { radioX: 150, radioY: 2000, ajusteX: 0, ajusteY: 0, escala: 0.8 };
     }
 }
 

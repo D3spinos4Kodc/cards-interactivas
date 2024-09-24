@@ -15,7 +15,7 @@ function obtenerRadioDeDispersión() {
     const anchoPantalla = window.innerWidth;
     
     // Breakpoints para las distintas resolciones
-    if (anchoPantalla >= 2560) {
+    if (anchoPantalla >= 2540) {
         // Pantallas grandes de escritorio 2560
         return { radioX: 650, radioY: 350, ajusteX: 0, ajusteY: -100, escala: 1.4 };
     } else if (anchoPantalla >= 1920) {
